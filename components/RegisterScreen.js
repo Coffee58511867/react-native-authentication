@@ -9,23 +9,39 @@ import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
 
 export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
+  const register = () =>  {
+    console.log(email);
+  }
  
   return (
     <View style={globalStyles.container}>
       <TextInput
-        placeholder="Enter your name"
+        placeholder="Email address"
         style={globalStyles.input}
-        value={name}
-        onChangeText={(value) => setName(value)}
+        value={email}
+        onChangeText={(value) => setEmail(value)}
+        keyboardType='email-address'
+      />
+            <TextInput
+        placeholder="Phone Number"
+        style={globalStyles.input}
+        value={phone}
+        onChangeText={(value) => setPhone(value)}
+        keyboardType='phone-pad'
       />
       <TextInput
-        placeholder="Enter your age"
+        placeholder="Password"
         style={globalStyles.input}
-        value={age}
-        onChangeText={(value) => setAge(value)}
+        value={password}
+        onChangeText={(value) => setPassword(value)}
+        keyboardType='visible-password'
       />
+      <CustomButton text="Register" onPress={register}/>
     </View>
+    
   );
 };
