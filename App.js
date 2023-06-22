@@ -4,6 +4,7 @@ import RegisterScreen from './components/RegisterScreen';
 import DashboardScreen from './components/Dashboard';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import TopBar from './components/Topbar';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ export default function App() {
       }}
       component={Splashcreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Menu" component={TopBar} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
     </Stack.Navigator>

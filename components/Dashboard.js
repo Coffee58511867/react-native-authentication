@@ -7,10 +7,14 @@ export default function DashboardScreen({ navigation }) {
   const handleLogout = () => {
     navigation.push("Login");
   };
+  const handleMenu = () => {
+    navigation.push("Menu");
+  }
 
   return (
     <View style={globalStyles.container}>
       <CustomButton text="Logout" onPress={handleLogout} />
+      <CustomButton text="Go to Menu" onPress={handleMenu} />
     </View>
   );
 }
