@@ -25,6 +25,12 @@ export default function LoginScreen({ navigation }) {
     handleLogin();
   };
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: null,
+    });
+  }, [navigation]);
+
   return (
     <View style={globalStyles.container}>
       <Controller
