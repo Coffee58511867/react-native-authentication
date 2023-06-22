@@ -15,7 +15,7 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      // Perform login logic here
+      navigation.push('Dashboard');
     } catch (error) {
       console.log(error);
     }

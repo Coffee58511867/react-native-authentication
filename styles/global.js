@@ -49,6 +49,7 @@ export const globalStyles = StyleSheet.create({
     errorText: {
       color: "red",
       marginBottom: 10,
+      marginLeft: 10,
     },
 
   });
