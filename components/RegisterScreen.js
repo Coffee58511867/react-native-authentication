@@ -1,47 +1,109 @@
-import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import React from "react";
+import { Text, TextInput, View } from "react-native";
 import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
+import { useForm, Controller } from "react-hook-form";
 
 export default function RegisterScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const register = () =>  {
-    console.log(email);
-  }
- 
+  const onSubmit = (data) => {
+    console.log(data.email);
+  };
+
   return (
     <View style={globalStyles.container}>
-      <TextInput
-        placeholder="Email address"
-        style={globalStyles.input}
-        value={email}
-        onChangeText={(value) => setEmail(value)}
-        keyboardType='email-address'
-      />
+      <Controller
+        control={control}
+        rules={{
+          required: "Email address is required",
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "Invalid email address",
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
             <TextInput
-        placeholder="Phone Number"
-        style={globalStyles.input}
-        value={phone}
-        onChangeText={(value) => setPhone(value)}
-        keyboardType='phone-pad'
+              placeholder="Email address"
+              style={globalStyles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              keyboardType="email-address"
+            />
+            {errors.email && (
+              <Text style={globalStyles.errorText}>{errors.email.message}</Text>
+            )}
+          </View>
+        )}
+        name="email"
+        defaultValue=""
       />
-      <TextInput
-        placeholder="Password"
-        style={globalStyles.input}
-        value={password}
-        onChangeText={(value) => setPassword(value)}
-        keyboardType='visible-password'
+
+      <Controller
+        control={control}
+        rules={{
+          required: "Phone number is required",
+          pattern: {
+            value: /^[0-9]{8}$/,
+            message: "Invalid phone number",
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
+            <TextInput
+              placeholder="Phone number"
+              style={globalStyles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              keyboardType="phone-pad"
+            />
+            {errors.phone && (
+              <Text style={globalStyles.errorText}>{errors.phone.message}</Text>
+            )}
+          </View>
+        )}
+        name="phone"
+        defaultValue=""
       />
-      <CustomButton text="Register" onPress={register}/>
+
+      <Controller
+        control={control}
+        rules={{
+          required: "Password is required",
+          minLength: {
+            value: 8,
+            message: "Password must be at least 8 characters long",
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
+            <TextInput
+              placeholder="Password"
+              style={globalStyles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              secureTextEntry
+            />
+            {errors.password && (
+              <Text style={globalStyles.errorText}>
+                {errors.password.message}
+              </Text>
+            )}
+          </View>
+        )}
+        name="password"
+        defaultValue=""
+      />
+
+      <CustomButton text="Register" onPress={handleSubmit(onSubmit)} />
     </View>
-    
   );
-};
+}
