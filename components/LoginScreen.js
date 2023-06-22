@@ -1,46 +1,100 @@
-import { useState } from "react";
-import {
-  Text,
-  TextInput,
-  View,
-  Alert,
-} from "react-native";
+import React, { useState } from "react";
+import { Text, TextInput, View, Alert } from "react-native";
 import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
+import { useForm, Controller } from "react-hook-form";
 
 export default function LoginScreen({ navigation }) {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    if (name.length == 0 && age.length != 0) {
-      Alert.alert("Warning", "Please enter your details ");
-    } else {
-      try {
-      
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      // Perform login logic here
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  const onSubmit = (data) => {
+    handleLogin();
+  };
+
   return (
     <View style={globalStyles.container}>
-      <TextInput
-        placeholder="Enter your name"
-        style={globalStyles.input}
-        value={name}
-        onChangeText={(value) => setName(value)}
+      <Controller
+        control={control}
+        rules={{
+          required: { value: true, message: "Please enter your email" },
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "Please enter a valid email",
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
+            <TextInput
+              placeholder="Enter your email"
+              style={globalStyles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => {
+                setEmail(value);
+                onChange(value);
+              }}
+              value={email}
+            />
+            {errors.email && (
+              <Text style={globalStyles.errorText}>{errors.email.message}</Text>
+            )}
+          </View>
+        )}
+        name="email"
+        defaultValue=""
       />
-      <TextInput
-        placeholder="Enter your age"
-        style={globalStyles.input}
-        value={age}
-        onChangeText={(value) => setAge(value)}
+
+      <Controller
+        control={control}
+        rules={{
+          required: { value: true, message: "Please enter your password" },
+          minLength: {
+            value: 8,
+            message: "Password must be at least 8 characters long",
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
+            <TextInput
+              placeholder="Enter your password"
+              style={globalStyles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => {
+                setPassword(value);
+                onChange(value);
+              }}
+              value={password}
+              secureTextEntry
+            />
+            {errors.password && (
+              <Text style={globalStyles.errorText}>
+                {errors.password.message}
+              </Text>
+            )}
+          </View>
+        )}
+        name="password"
+        defaultValue=""
       />
-      <CustomButton text="Login" onPress={handleLogin}/>
-      <CustomButton text="Register"   onPress={() => navigation.push("Register")}/>
-   
+
+      <CustomButton text="Login" onPress={handleSubmit(onSubmit)} />
+      <CustomButton
+        text="Register"
+        onPress={() => navigation.push("Register")}
+      />
     </View>
   );
 }
-
