@@ -25,11 +25,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    fontSize: 25,
-  },
-  image: {
-    height: 150,
-    width: 150,
-    margin: 20,
+    fontSize: 30,
   },
 });
