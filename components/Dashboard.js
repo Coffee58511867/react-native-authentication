@@ -8,6 +8,7 @@ const auth = getAuth();
 export default function DashboardScreen({ navigation }) {
 
   const [email, setEmail] = useState("");
+  const [id, setID] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -16,6 +17,7 @@ export default function DashboardScreen({ navigation }) {
         navigation.replace("Login");
       }else{
         setEmail(user.email);
+        setID(user.uid);
       }
     });
 
@@ -36,7 +38,7 @@ export default function DashboardScreen({ navigation }) {
 
   return (
     <View style={globalStyles.container}>
-      <Text>Welcome {email}</Text>
+      <Text>Welcome {email} {id}</Text>
       <CustomButton text="Logout" onPress={handleLogout} />
       <CustomButton text="Go to Menu" onPress={handleMenu} />
     </View>

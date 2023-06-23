@@ -1,9 +1,12 @@
 import React from "react";
-import { Text, TextInput, View , Alert} from "react-native";
+import { Text, TextInput, View, Alert } from "react-native";
 import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
 import { useForm, Controller } from "react-hook-form";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+const firestore = getFirestore();
 const auth = getAuth();
 
 export default function RegisterScreen({ navigation }) {
@@ -19,10 +22,18 @@ export default function RegisterScreen({ navigation }) {
         auth,
         data.email,
         data.password
-      ).then(() => {
+      ).then(async () => {
         // User registration successful
-        navigation.push("Login");
-        Alert.alert("Success", "User registered successfully");
+
+        // Store data in Firestore
+        const usersCollectionRef = collection(firestore, "users");
+        await addDoc(usersCollectionRef, {
+          email: data.email,
+          phone: data.phone,
+        }).then(() => {
+          navigation.push("Login");
+          Alert.alert("Success", "User registered successfully");
+        });
       });
     } catch (error) {
       Alert.alert("Error", "Failed to create user");
