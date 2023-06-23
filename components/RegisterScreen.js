@@ -3,6 +3,8 @@ import { Text, TextInput, View } from "react-native";
 import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
 import { useForm, Controller } from "react-hook-form";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+const auth = getAuth();
 
 export default function RegisterScreen({ navigation }) {
   const {
@@ -11,8 +13,19 @@ export default function RegisterScreen({ navigation }) {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data.email);
+  const onSubmit = async(data) => {
+    try {
+    
+      await createUserWithEmailAndPassword(auth, data.email, data.password)
+       .then(() => {
+         // User registration successful
+         navigation.push('Dashboard');
+         Alert.alert("Success", "User registered successfully");
+       })
+     } catch (error) {
+       Alert.alert("Error", "Failed to create user");
+       console.log(error);
+     }
   };
 
   return (
