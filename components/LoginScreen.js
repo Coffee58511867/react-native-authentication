@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Text, TextInput, View, Alert } from "react-native";
 import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
 import { useForm, Controller } from "react-hook-form";
-import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
 const auth = getAuth();
 
 
@@ -15,6 +15,17 @@ export default function LoginScreen({ navigation }) {
   } = useForm();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is already logged in, redirect to dashboard
+        navigation.replace("Dashboard");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigation]);
 
   const onSubmit = async (data) => {
     try {
