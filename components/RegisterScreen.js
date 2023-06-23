@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, View , Alert} from "react-native";
 import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
 import { useForm, Controller } from "react-hook-form";
@@ -13,19 +13,21 @@ export default function RegisterScreen({ navigation }) {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     try {
-    
-      await createUserWithEmailAndPassword(auth, data.email, data.password)
-       .then(() => {
-         // User registration successful
-         navigation.push('Dashboard');
-         Alert.alert("Success", "User registered successfully");
-       })
-     } catch (error) {
-       Alert.alert("Error", "Failed to create user");
-       console.log(error);
-     }
+      await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      ).then(() => {
+        // User registration successful
+        navigation.push("Login");
+        Alert.alert("Success", "User registered successfully");
+      });
+    } catch (error) {
+      Alert.alert("Error", "Failed to create user");
+      console.log(error);
+    }
   };
 
   return (
