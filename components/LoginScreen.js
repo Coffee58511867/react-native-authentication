@@ -4,7 +4,6 @@ import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
 import { useForm, Controller } from "react-hook-form";
 import { auth } from "../firebaseConfig";
-import * as firebase from "firebase";
 
 
 export default function LoginScreen({ navigation }) {
@@ -19,7 +18,7 @@ export default function LoginScreen({ navigation }) {
   const onSubmit = async (data) => {
     try {
     
-      await auth.createUserWithEmailAndPassword(data.email, data.password)
+     await auth.signInWithEmailAndPassword(data.email, data.password)
       .then(() => {
         // User registration successful
         navigation.push('Dashboard');
