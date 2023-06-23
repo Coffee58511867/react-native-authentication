@@ -3,6 +3,9 @@ import { Text, TextInput, View, Alert } from "react-native";
 import { globalStyles } from "../styles/global";
 import CustomButton from "../shared/button";
 import { useForm, Controller } from "react-hook-form";
+import { auth } from "../firebaseConfig";
+import * as firebase from "firebase";
+
 
 export default function LoginScreen({ navigation }) {
   const {
@@ -13,16 +16,14 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const onSubmit = async (data) => {
     try {
       navigation.push('Dashboard');
+      await auth.createUserWithEmailAndPassword(data.email, data.password);
     } catch (error) {
+      Alert.alert("Error", "Failed to create user");
       console.log(error);
     }
-  };
-
-  const onSubmit = (data) => {
-    handleLogin();
   };
 
   React.useLayoutEffect(() => {
