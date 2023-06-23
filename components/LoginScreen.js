@@ -18,8 +18,13 @@ export default function LoginScreen({ navigation }) {
 
   const onSubmit = async (data) => {
     try {
-      navigation.push('Dashboard');
-      await auth.createUserWithEmailAndPassword(data.email, data.password);
+    
+      await auth.createUserWithEmailAndPassword(data.email, data.password)
+      .then(() => {
+        // User registration successful
+        navigation.push('Dashboard');
+        Alert.alert("Success", "User registered successfully");
+      })
     } catch (error) {
       Alert.alert("Error", "Failed to create user");
       console.log(error);
